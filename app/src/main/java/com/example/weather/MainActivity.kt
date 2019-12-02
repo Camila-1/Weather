@@ -1,14 +1,14 @@
 package com.example.weather
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import androidx.work.OneTimeWorkRequest
-import androidx.work.PeriodicWorkRequest
+import com.example.weather.fragments.WeatherDetailsFragment
 import com.example.weather.fragments.WeatherListFragment
-import androidx.work.WorkManager
+import com.example.weather.response.WeatherData
 
 class MainActivity : AppCompatActivity() {
+    private var checkedItem: WeatherData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,9 +16,21 @@ class MainActivity : AppCompatActivity() {
 
         val fragmentManager = supportFragmentManager
         val transaction = fragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment, WeatherListFragment())
+        transaction.replace(R.id.fragment, WeatherListFragment()).commit()
+    }
 
-        val workManager = WorkManager.getInstance()
-        val periodicWork = OneTimeWorkRequest.Builder(WeatherWorker::class.java)
+    fun itemClicked(item: WeatherData) {
+        checkedItem = item
+        val fragmentManager = supportFragmentManager
+        val transaction = fragmentManager.beginTransaction()
+        val orientation: Int = resources.configuration.orientation
+
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            transaction.replace(R.id.fragment, WeatherDetailsFragment.newInstance(item))
+                .commit()
+        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            transaction.replace(R.id.fragment, WeatherDetailsFragment.newInstance(item))
+                .commit()
+        }
     }
 }
