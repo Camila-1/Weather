@@ -11,6 +11,7 @@ data class WeatherData (
     val weather: List<Weather>,
     val wind: Wind,
     val rain: Map<String, Double>?,
+    val snow: Map<String, Double>?,
     val clouds: Map<String, Double>?,
     @Json(name = "dt_txt") val dateTime: String
 ) : Parcelable

@@ -1,137 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".fragments.WeatherDetailsFragment">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Температура:" />
-
-        <TextView
-            android:id="@+id/temperature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="16sp"/>
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintWidth_percent=".35"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/date"
+            android:layout_margin="10dp"/>
+
+
+        <TextView
+            android:id="@+id/current_weather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Мин. Температура:" />
+            app:layout_constraintTop_toBottomOf="@id/date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/icon"
+            android:textSize="45sp"
+            android:textColor="#90caf9"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:layout_margin="10dp"/>
 
         <TextView
-            android:id="@+id/min_temperature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ьфкс. Температура:" />
-
-        <TextView
-            android:id="@+id/max_temperature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
+            android:id="@+id/min_max_temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Атм. давление:" />
+            app:layout_constraintStart_toEndOf="@id/icon"
+            app:layout_constraintTop_toBottomOf="@id/current_weather"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/clouds_line"
+            android:textSize="25sp"
+            android:textColor="#90caf9"
+            android:fontFamily="sans-serif"
+            android:layout_margin="10dp"/>
 
-        <TextView
-            android:id="@+id/pressure"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+        <View
+            android:id="@+id/divider_1"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/icon"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/clouds_line"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Влажность:"
-            />
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_1"
+            android:padding="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Облачность:"
+                style="@style/title_style"/>
 
-        <TextView
-            android:id="@+id/humidity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+            <TextView
+                android:id="@+id/clouds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/data_style"/>
+        </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ветер:"
-        />
+        <View
+            android:id="@+id/divider_2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="10dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/clouds_line"/>
 
-        <TextView
-            android:id="@+id/wind_speed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/wind_deg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/humidity_line"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Облачность:"
-            />
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_2"
+            android:padding="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Влажность:"
+                style="@style/title_style"/>
 
-        <TextView
-            android:id="@+id/rain"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+            <TextView
+                android:id="@+id/humidity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/data_style"/>
+        </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
+        <View
+            android:id="@+id/divider_3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="10dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/humidity_line"/>
+
+        <LinearLayout
+            android:id="@+id/pressure_line"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Осадки:"
-            />
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_3"
+            android:padding="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Давление"
+                style="@style/title_style"/>
+
+            <TextView
+                android:id="@+id/pressure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/data_style"/>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider_4"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/pressure_line"/>
 
         <TextView
-            android:id="@+id/clouds"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+            android:id="@+id/wind"
+            android:padding="10dp"
+            android:text="Ветер"
+            style="@style/header_style"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_4" />
+
+        <LinearLayout
+            android:id="@+id/wind_speed_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wind"
+            android:padding="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Скорость"
+                style="@style/title_style"/>
+
+            <TextView
+                android:id="@+id/wind_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/data_style"/>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider_5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="10dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/wind_speed_line"/>
+
+        <LinearLayout
+            android:id="@+id/wind_ged_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_5"
+            android:padding="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Направление"
+                style="@style/title_style"/>
+
+            <TextView
+                android:id="@+id/wind_deg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/data_style"/>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider_6"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/wind_ged_line"/>
 
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/precipitation"
+            android:padding="10dp"
+            android:text="Осадки"
+            style="@style/header_style"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_6" />
+
+        <LinearLayout
+            android:id="@+id/rain_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/precipitation">
+
+            <TextView
+                style="@style/title_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rain" />
+
+            <TextView
+                android:id="@+id/rain"
+                style="@style/data_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider_7"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="10dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/rain_line"/>
+
+        <LinearLayout
+            android:id="@+id/snow_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_7"
+            android:padding="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Снег"
+                style="@style/title_style"/>
+
+            <TextView
+                android:id="@+id/snow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/data_style"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

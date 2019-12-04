@@ -10,6 +10,7 @@ import androidx.core.os.bundleOf
 import com.example.weather.R
 import com.example.weather.response.WeatherData
 import kotlinx.android.synthetic.main.fragment_weather_details.*
+import kotlinx.android.synthetic.main.fragment_weather_details.view.*
 
 /**
  * A simple [Fragment] subclass.
@@ -28,18 +29,21 @@ class WeatherDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        selectedItem?.main?.temp.let { temperature.text = it.toString() }
-        selectedItem?.main?.tempMin.let { min_temperature.text = it.toString() }
-        selectedItem?.main?.tempMax.let { max_temperature.text = it.toString() }
-        selectedItem?.main?.pressure.let { pressure.text = it.toString() }
-        selectedItem?.main?.humidity.let { humidity.text = it.toString() }
-        selectedItem?.wind?.speed.let { wind_speed.text = it.toString() }
-        selectedItem?.wind?.deg.let { wind_deg.text = it.toString() }
-        selectedItem?.rain.let { rain.text = it.toString() }
+        val item = selectedItem ?: return
+        icon.setImageResource(resources.getIdentifier("icon_${item.weather[0].icon}", "drawable", context?.packageName))
+        item.main.temp.let { current_weather.text = it.toString() }
+        view.min_max_temp.text = item.main.tempMin.toString().plus(" / ").plus(item.main.tempMax.toString())
+        item.main.pressure.let { pressure.text = it.toString() }
+        item.main.humidity.let { humidity.text = it.toString() }
+        item.wind.speed.let { wind_speed.text = it.toString() }
+        item.wind.deg.let { wind_deg.text = it.toString() }
+        view.clouds.text = item.clouds?.get("all")?.toString() ?: "-"
+        view.rain.text = item.rain?.get("3h")?.toString() ?: "-"
+        view.snow.text = item.snow?.get("3h")?.toString() ?: "-"
     }
 
     companion object {
-        fun newInstance(item: WeatherData) : Fragment = WeatherDetailsFragment().apply {
+        fun newInstance(item: WeatherData?) : Fragment = WeatherDetailsFragment().apply {
             arguments = bundleOf("selectedItem" to item)
         }
     }

@@ -10,6 +10,6 @@ interface WeatherService {
     @GET("forecast")
     fun getCurrentWeatherDataByCityName(@Query("q") city: String): Call<WeatherResponse>
 
-    @GET("weather?lat={lat}&lon={lon}")
-    fun getCurrentWeatherDataByCoordinates(@Path("lat") lat: String, @Path("lon") lon: String): Call<List<WeatherResponse>>
+    @GET("forecast")
+    fun getCurrentWeatherDataByCoordinates(@Query("lat") lat: String, @Query("lon") lon: String): Call<WeatherResponse>
 }

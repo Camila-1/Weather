@@ -1,0 +1,23 @@
+<resources>
+    <!-- Scale Preference -->
+    <string-array name="scale_entries">
+        <item>°C</item>
+        <item>°F</item>
+    </string-array>
+
+    <string-array name="scale_values">
+        <item>celsius</item>
+        <item>fahrenheit</item>
+    </string-array>
+
+    <!-- Wind Preference -->
+    <string-array name="wind_entries">
+        <item>Kms</item>
+        <item>Mls</item>
+    </string-array>
+
+    <string-array name="wind_values">
+        <item>kilometers</item>
+        <item>miles</item>
+    </string-array>
+</resources>
