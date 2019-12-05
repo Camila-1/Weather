@@ -1,23 +1,84 @@
 <resources>
-    <!-- Scale Preference -->
-    <string-array name="scale_entries">
-        <item>°C</item>
-        <item>°F</item>
+    <!-- Units Preference -->
+    <string-array name="units">
+        <item>°C / meter</item>
+        <item>°F / miles</item>
     </string-array>
 
-    <string-array name="scale_values">
-        <item>celsius</item>
-        <item>fahrenheit</item>
+    <string-array name="unit_values">
+        <item>metric</item>
+        <item>imperial</item>
     </string-array>
 
-    <!-- Wind Preference -->
-    <string-array name="wind_entries">
-        <item>Kms</item>
-        <item>Mls</item>
+    <string-array name="lang">
+        <item>Українська</item>
+        <item>Русский</item>
+        <item>English</item>
+        <item>عربى</item>
+        <item>Български</item>
+        <item>Català</item>
+        <item>Čeština</item>
+        <item>Deutsche</item>
+        <item>Ελληνικά</item>
+        <item>فارسی (فارسی)</item>
+        <item>Suomalainen</item>
+        <item>Français</item>
+        <item>Galego</item>
+        <item>Hrvatski</item>
+        <item>Magyar</item>
+        <item>Italiano</item>
+        <item>日本人</item>
+        <item>한국어</item>
+        <item>Latvietis</item>
+        <item>Lietuvis</item>
+        <item>Македонски</item>
+        <item>Nederlands</item>
+        <item>Polskie</item>
+        <item>Português</item>
+        <item>Română</item>
+        <item>Svenska</item>
+        <item>Slovenský</item>
+        <item>Slovenščina</item>
+        <item>Español</item>
+        <item>Türk</item>
+        <item>Tiếng Việt</item>
+        <item>简体中文</item>
+        <item>中國傳統的</item>
     </string-array>
 
-    <string-array name="wind_values">
-        <item>kilometers</item>
-        <item>miles</item>
+    <string-array name="lang_values">
+        <item>ua</item>
+        <item>ru</item>
+        <item>en</item>
+        <item>ar</item>
+        <item>bg</item>
+        <item>ca</item>
+        <item>cz</item>
+        <item>de</item>
+        <item>el</item>
+        <item>fa</item>
+        <item>fi</item>
+        <item>fr</item>
+        <item>gl</item>
+        <item>hr</item>
+        <item>hu</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>kr</item>
+        <item>la</item>
+        <item>lt</item>
+        <item>mk</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>se</item>
+        <item>sk</item>
+        <item>sl</item>
+        <item>es</item>
+        <item>tr</item>
+        <item>vi</item>
+        <item>zh_cn</item>
+        <item>zh_tw</item>
     </string-array>
 </resources>

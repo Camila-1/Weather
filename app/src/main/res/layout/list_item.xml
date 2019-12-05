@@ -22,22 +22,20 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/image"
         app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/status"
+        app:layout_constraintBottom_toTopOf="@id/description"
         android:layout_margin="10dp"
-        android:textSize="16sp"
-        android:fontFamily="sans-serif"/>
+        style="@style/date_style"/>
 
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/status"
+        android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/image"
         app:layout_constraintTop_toBottomOf="@id/date"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="10dp"
-        android:textSize="16sp"
-        android:fontFamily="sans-serif"/>
+        style="@style/description_style"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/degree"
@@ -47,7 +45,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="10dp"
-        android:textSize="30sp"
+        android:textSize="35sp"
         android:textColor="#90caf9"
         android:fontFamily="sans-serif"
         android:textStyle="bold"/>

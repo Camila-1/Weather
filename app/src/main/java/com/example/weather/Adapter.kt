@@ -9,15 +9,15 @@ import kotlinx.android.synthetic.main.list_item.view.*
 
 
 
-class Adapter(private val items: List<WeatherData>, private val callback: (WeatherData) -> Unit) : RecyclerView.Adapter<Adapter.ViewHolder>() {
+class Adapter(private val items: ArrayList<WeatherData>, private val callback: (WeatherData) -> Unit) : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: WeatherData, listener: (WeatherData) -> Unit) = with(itemView) {
 
+        fun bind(item: WeatherData, listener: (WeatherData) -> Unit) = with(itemView) {
             image.setImageResource(resources.getIdentifier("icon_${item.weather[0].icon}", "drawable", context.packageName))
-            degree.text = item.main.temp.toString()
-            status.text = item.weather[0].main
-            date.text = item.dateTime
+            degree.text = Math.round(item.main.temp).toString().plus(SharedPreferenceHolder.getTemperatureUnit(context))
+            description.text = item.weather[0].description.split(' ').joinToString(" ") { it.capitalize() }
+            date.text = formatDate(item.dateTime, context)
             setOnClickListener{listener(item)}
         }
     }

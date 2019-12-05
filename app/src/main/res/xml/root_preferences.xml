@@ -32,21 +32,23 @@
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Единицы измерения">
+    <PreferenceCategory app:title="Данные">
         <ListPreference
-            app:defaultValue="°C"
-            app:entries="@array/scale_entries"
-            app:entryValues="@array/scale_values"
-            app:key="temp_units"
-            app:title="Температура"
+            app:defaultValue="metric"
+            app:entries="@array/units"
+            app:entryValues="@array/unit_values"
+            app:key="units"
+            app:title="Единицы измерения"
             app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
 
+    <PreferenceCategory app:title="Язык">
         <ListPreference
-            app:defaultValue="Kms"
-            app:entries="@array/wind_entries"
-            app:entryValues="@array/wind_values"
-            app:key="distance_units"
-            app:title="Скорость ветра"
+            app:defaultValue="ru"
+            app:entries="@array/lang"
+            app:entryValues="@array/lang_values"
+            app:key="lang"
+            app:title="Выбрать язык"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
