@@ -1,29 +1,26 @@
 package com.example.weather
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
-import android.location.Location
-import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.Observer
 import androidx.preference.PreferenceManager
+import androidx.work.*
+import com.example.weather.db.WeatherModel
 import com.example.weather.fragments.WeatherDetailsFragment
 import com.example.weather.fragments.WeatherListFragment
 import com.example.weather.response.WeatherData
 import com.example.weather.response.WeatherResponse
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,37 +30,45 @@ class MainActivity : AppCompatActivity() {
     private var checkedItem: WeatherData? = null
     private var sharedPreferences = lazy { PreferenceManager.getDefaultSharedPreferences(this) }
 
-    private var listWeatherData: List<WeatherData> = emptyList()
+    private var listWeatherData: WeatherResponse? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
 
-        if (listWeatherData.isEmpty())
+        if (listWeatherData == null)
             updateWeatherData()
 
         checkedItem = savedInstanceState?.getParcelable("item")
     }
 
     fun updateWeatherData() {
-        val serviceBuilder = ServiceBuilder(this)
-        val weatherService = serviceBuilder.weatherService()
 
-        val response = getWeatherResponse(weatherService)
+        val constraints = Constraints.Builder()
+            .setRequiresCharging(true)
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
 
-        response.enqueue(object: Callback<WeatherResponse> {
-            override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
-                listWeatherData = response.body()?.list ?: emptyList()
-                render(checkedItem)
-                progress_bar.visibility = View.INVISIBLE
-            }
+        val request = OneTimeWorkRequest.Builder(WeatherWorker::class.java)
+            .setInputData(Data.Builder()
+                .putString("unit", SharedPreferenceHolder.getUnit(this))
+                .putString("lang", SharedPreferenceHolder.getLang(this))
+                .putBoolean("isGeolocationEnabled", SharedPreferenceHolder.isGeolocationEnabled(this) && checkLocationPermission())
+                .build())
+            .setConstraints(constraints)
+            .build()
+        WorkManager.getInstance().enqueue(request)
+        WorkManager.getInstance().getWorkInfoByIdLiveData(request.id)
+            .observe(this, Observer {
+                if(it.state.isFinished) {
+                    val model = WeatherModel(this)
+                    listWeatherData = model.getWeatherResponse()
+                    render(checkedItem)
+                    progress_bar.visibility = View.INVISIBLE
+                }
+            })
 
-            override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
-                Log.e("WeatherListFragment", t.toString(), t)
-                Toast.makeText(applicationContext, "Error", Toast.LENGTH_LONG).show()
-            }
-        })
     }
 
 
@@ -128,32 +133,8 @@ class MainActivity : AppCompatActivity() {
                     .commit()
                 Configuration.ORIENTATION_LANDSCAPE -> transaction.replace(R.id.list_fragment, WeatherListFragment.newInstance(listWeatherData))
                     .replace(R.id.details_fragment, LonelyCloudFragment()).commitAllowingStateLoss()
-                    }
             }
-    }
-
-    fun getWeatherResponse(service: WeatherService): Call<WeatherResponse> {
-        if (!sharedPreferences.value.getBoolean("coordinates", true))
-            return service.getCurrentWeatherDataByCityName(sharedPreferences.value.getString("city", "")!!,
-                sharedPreferences.value.getString("units", "").toString(),
-                sharedPreferences.value.getString("lang", "").toString())
-        else {
-            val location = getCurrentLocation()
-            return service.getCurrentWeatherDataByCoordinates(location?.latitude.toString(),
-                location?.longitude.toString(),
-                sharedPreferences.value.getString("units", "").toString(),
-                sharedPreferences.value.getString("lang", "").toString())
         }
-    }
-
-    fun getCurrentLocation(): Location? {
-        var location: Location? = null
-
-        if (checkLocationPermission()) {
-            val locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-        }
-        return location
     }
 
     fun checkLocationPermission(): Boolean {

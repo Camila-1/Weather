@@ -17,38 +17,39 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory app:title="Регион">
+    <PreferenceCategory app:title="@string/region">
         <SwitchPreferenceCompat
+            app:defaultValue="false"
             app:key="coordinates"
             android:disableDependentsState="true"
-            app:title="Определить координаты"/>
+            app:title="@string/determine_the_coordinates"/>
 
         <EditTextPreference
             android:dependency="coordinates"
 
             app:defaultValue="Tashkent"
             app:key="city"
-            app:title="Город"
+            app:title="@string/city"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Данные">
+    <PreferenceCategory app:title="@string/data">
         <ListPreference
             app:defaultValue="metric"
             app:entries="@array/units"
             app:entryValues="@array/unit_values"
             app:key="units"
-            app:title="Единицы измерения"
+            app:title="@string/units"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Язык">
+    <PreferenceCategory app:title="@string/language">
         <ListPreference
             app:defaultValue="ru"
             app:entries="@array/lang"
             app:entryValues="@array/lang_values"
             app:key="lang"
-            app:title="Выбрать язык"
+            app:title="@string/choose_language"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 

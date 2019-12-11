@@ -9,11 +9,12 @@ import kotlinx.android.synthetic.main.list_item.view.*
 
 
 
-class Adapter(private val items: ArrayList<WeatherData>, private val callback: (WeatherData) -> Unit) : RecyclerView.Adapter<Adapter.ViewHolder>() {
+class Adapter(private val items: List<WeatherData>?, private val callback: (WeatherData) -> Unit) : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: WeatherData, listener: (WeatherData) -> Unit) = with(itemView) {
+        fun bind(item: WeatherData?, listener: (WeatherData) -> Unit) = with(itemView) {
+            if (item == null) return@with
             image.setImageResource(resources.getIdentifier("icon_${item.weather[0].icon}", "drawable", context.packageName))
             degree.text = Math.round(item.main.temp).toString().plus(SharedPreferenceHolder.getTemperatureUnit(context))
             description.text = item.weather[0].description.split(' ').joinToString(" ") { it.capitalize() }
@@ -22,9 +23,9 @@ class Adapter(private val items: ArrayList<WeatherData>, private val callback: (
         }
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount() = items?.size ?: 0
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(items[position], callback)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(items?.get(position), callback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder  = with(parent){
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.list_item, this, false))

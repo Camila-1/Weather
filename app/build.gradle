@@ -54,5 +54,4 @@ dependencies {
     debugImplementation "com.github.ChuckerTeam.Chucker:library:$OkHttp_version"
     releaseImplementation "com.github.ChuckerTeam.Chucker:library-no-op:$OkHttp_version"
     implementation "com.google.android.material:material:1.0.0"
-
 }

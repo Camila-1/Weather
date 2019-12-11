@@ -10,17 +10,17 @@ import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather.*
 import androidx.preference.PreferenceManager
-import com.example.weather.response.WeatherData
+import com.example.weather.response.WeatherResponse
 import kotlinx.android.synthetic.main.fragment_weather_list.*
 
 
 class WeatherListFragment : Fragment() {
 
-    private var list: ArrayList<WeatherData> = arrayListOf()
+    private var response: WeatherResponse? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        list = arguments?.getParcelableArrayList<WeatherData>("list") ?: arrayListOf()
+        response = arguments?.getParcelable("list")
     }
 
     override fun onCreateView(
@@ -33,7 +33,7 @@ class WeatherListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = Adapter(list) {
+        val adapter = Adapter(response?.list) {
             (activity as MainActivity).itemClicked(it)
         }
         recycler_view.layoutManager = LinearLayoutManager(context)
@@ -45,8 +45,8 @@ class WeatherListFragment : Fragment() {
 
 
     companion object{
-        fun newInstance(list: List<WeatherData>?): Fragment = WeatherListFragment().apply {
-            arguments = bundleOf("list" to list)
+        fun newInstance(response: WeatherResponse?): Fragment = WeatherListFragment().apply {
+            arguments = bundleOf("list" to response)
         }
     }
 

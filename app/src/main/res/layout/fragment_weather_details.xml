@@ -78,7 +78,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Облачность:"
+                android:text="@string/clouds"
                 style="@style/title_style"/>
 
             <TextView
@@ -106,7 +106,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Влажность:"
+                android:text="@string/humidity"
                 style="@style/title_style"/>
 
             <TextView
@@ -134,7 +134,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Давление"
+                android:text="@string/pressure"
                 style="@style/title_style"/>
 
             <TextView
@@ -156,7 +156,7 @@
         <TextView
             android:id="@+id/wind"
             android:padding="10dp"
-            android:text="Ветер"
+            android:text="@string/wind"
             style="@style/header_style"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -173,7 +173,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Скорость"
+                android:text="@string/wind_speed"
                 style="@style/title_style"/>
 
             <TextView
@@ -201,7 +201,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Направление"
+                android:text="@string/wind_deg"
                 style="@style/title_style"/>
 
             <TextView
@@ -224,7 +224,7 @@
         <TextView
             android:id="@+id/precipitation"
             android:padding="10dp"
-            android:text="Осадки"
+            android:text="@string/precipitation"
             style="@style/header_style"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -271,7 +271,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Снег"
+                android:text="@string/snow"
                 style="@style/title_style"/>
 
             <TextView

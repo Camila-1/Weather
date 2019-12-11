@@ -22,4 +22,24 @@ object SharedPreferenceHolder {
             else -> ""
         }
     }
+
+    fun isGeolocationEnabled(context: Context): Boolean {
+        val preference = PreferenceManager.getDefaultSharedPreferences(context)
+        return preference.getBoolean("coordinates", true)
+    }
+
+    fun getUnit(context: Context): String {
+        val preference = PreferenceManager.getDefaultSharedPreferences(context)
+        return preference.getString("units", "").toString()
+    }
+
+    fun getLang(context: Context): String {
+        val preference = PreferenceManager.getDefaultSharedPreferences(context)
+        return preference.getString("lang", "").toString()
+    }
+
+    fun getCity(context: Context): String {
+        val preference = PreferenceManager.getDefaultSharedPreferences(context)
+        return preference.getString("city", "")!!
+    }
 }
