@@ -1,14 +1,17 @@
 package com.example.weather
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
@@ -28,9 +31,8 @@ class MainActivity : AppCompatActivity() {
         private val REQUEST_CODE = 1
     }
     private var checkedItem: WeatherData? = null
-    private var sharedPreferences = lazy { PreferenceManager.getDefaultSharedPreferences(this) }
-
     private var listWeatherData: WeatherResponse? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,13 +40,28 @@ class MainActivity : AppCompatActivity() {
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
 
         if (listWeatherData == null)
-            updateWeatherData()
+            showWeatherData()
 
         checkedItem = savedInstanceState?.getParcelable("item")
     }
 
-    fun updateWeatherData() {
+    fun showWeatherData() {
+        if (hasNetworkConnection(this))
+            updateWeatherData()
+        else {
+            listWeatherData = WeatherModel(this).getWeatherResponse()
+            render(checkedItem)
+            Toast.makeText(this, R.string.connectivity_status_message, Toast.LENGTH_LONG).show()
+        }
+    }
 
+    fun hasNetworkConnection(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnectedOrConnecting
+    }
+
+    fun updateWeatherData() {
         val constraints = Constraints.Builder()
             .setRequiresCharging(true)
             .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -62,13 +79,10 @@ class MainActivity : AppCompatActivity() {
         WorkManager.getInstance().getWorkInfoByIdLiveData(request.id)
             .observe(this, Observer {
                 if(it.state.isFinished) {
-                    val model = WeatherModel(this)
-                    listWeatherData = model.getWeatherResponse()
+                    listWeatherData = WeatherModel(this).getWeatherResponse()
                     render(checkedItem)
-                    progress_bar.visibility = View.INVISIBLE
                 }
             })
-
     }
 
 
@@ -121,7 +135,6 @@ class MainActivity : AppCompatActivity() {
         if( checkedItem != null) {
             when (orientation) {
                 Configuration.ORIENTATION_PORTRAIT -> transaction.replace(R.id.fragment, WeatherDetailsFragment.newInstance(item))
-                    .addToBackStack(null)
                     .commit()
                 Configuration.ORIENTATION_LANDSCAPE -> transaction.replace(R.id.list_fragment, WeatherListFragment.newInstance(listWeatherData))
                     .replace(R.id.details_fragment, WeatherDetailsFragment.newInstance(item)).commit()
@@ -129,12 +142,12 @@ class MainActivity : AppCompatActivity() {
         } else {
             when (orientation) {
                 Configuration.ORIENTATION_PORTRAIT -> transaction.replace(R.id.fragment, WeatherListFragment.newInstance(listWeatherData))
-                    .addToBackStack(null)
                     .commit()
                 Configuration.ORIENTATION_LANDSCAPE -> transaction.replace(R.id.list_fragment, WeatherListFragment.newInstance(listWeatherData))
                     .replace(R.id.details_fragment, LonelyCloudFragment()).commitAllowingStateLoss()
             }
         }
+        progress_bar.visibility = View.INVISIBLE
     }
 
     fun checkLocationPermission(): Boolean {

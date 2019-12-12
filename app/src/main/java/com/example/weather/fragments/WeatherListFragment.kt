@@ -39,7 +39,7 @@ class WeatherListFragment : Fragment() {
         recycler_view.layoutManager = LinearLayoutManager(context)
         recycler_view.adapter = adapter
         swipe.setColorSchemeResources(R.color.colorPrimaryDark, R.color.colorPrimary)
-        swipe.setOnRefreshListener { (activity as MainActivity).updateWeatherData() }
+        swipe.setOnRefreshListener { (activity as MainActivity).showWeatherData() }
     }
 
 

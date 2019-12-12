@@ -10,6 +10,9 @@
     <string name="language">Язык</string>
     <string name="choose_language">Выбрать язык</string>
 
+    <!-- connectivity status message -->
+    <string name="connectivity_status_message">Нет соединения с интернетом</string>
+
     <!-- details strings -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="clouds">Облачность:</string>
