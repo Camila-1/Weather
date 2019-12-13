@@ -18,11 +18,15 @@ import androidx.lifecycle.Observer
 import androidx.preference.PreferenceManager
 import androidx.work.*
 import com.example.weather.db.WeatherModel
+import com.example.weather.fragments.LonelyCloudFragment
 import com.example.weather.fragments.WeatherDetailsFragment
 import com.example.weather.fragments.WeatherListFragment
 import com.example.weather.response.WeatherData
 import com.example.weather.response.WeatherResponse
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -49,8 +53,10 @@ class MainActivity : AppCompatActivity() {
         if (hasNetworkConnection(this))
             updateWeatherData()
         else {
-            listWeatherData = WeatherModel(this).getWeatherResponse()
-            render(checkedItem)
+            GlobalScope.launch {
+                listWeatherData = WeatherModel(this@MainActivity).getWeatherResponse()
+                render(checkedItem)
+            }
             Toast.makeText(this, R.string.connectivity_status_message, Toast.LENGTH_LONG).show()
         }
     }
@@ -62,27 +68,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun updateWeatherData() {
-        val constraints = Constraints.Builder()
-            .setRequiresCharging(true)
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
-
-        val request = OneTimeWorkRequest.Builder(WeatherWorker::class.java)
-            .setInputData(Data.Builder()
-                .putString("unit", SharedPreferenceHolder.getUnit(this))
-                .putString("lang", SharedPreferenceHolder.getLang(this))
-                .putBoolean("isGeolocationEnabled", SharedPreferenceHolder.isGeolocationEnabled(this) && checkLocationPermission())
-                .build())
-            .setConstraints(constraints)
-            .build()
-        WorkManager.getInstance().enqueue(request)
-        WorkManager.getInstance().getWorkInfoByIdLiveData(request.id)
-            .observe(this, Observer {
-                if(it.state.isFinished) {
-                    listWeatherData = WeatherModel(this).getWeatherResponse()
-                    render(checkedItem)
-                }
-            })
+        GlobalScope.launch {
+            val response = WeatherRequest(this@MainActivity).getWeatherResponseData()
+            val db = WeatherModel(this@MainActivity)
+            db.insert(response)
+            listWeatherData = response
+            render(checkedItem)
+        }
     }
 
 
@@ -116,16 +108,16 @@ class MainActivity : AppCompatActivity() {
         checkedItem = item
         val fragmentManager = supportFragmentManager
         val transaction = fragmentManager.beginTransaction()
-        val orientation: Int = resources.configuration.orientation
 
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            transaction.replace(R.id.list_fragment, WeatherListFragment.newInstance(listWeatherData))
-                .replace(R.id.details_fragment, WeatherDetailsFragment.newInstance(item))
-                .commit()
-        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            transaction.replace(R.id.fragment, WeatherDetailsFragment.newInstance(item))
-                .addToBackStack(null)
-                .commit()
+        when(resources.configuration.orientation) {
+            Configuration.ORIENTATION_LANDSCAPE ->
+                transaction.replace(R.id.list_fragment, WeatherListFragment.newInstance(listWeatherData))
+                    .replace(R.id.details_fragment, WeatherDetailsFragment.newInstance(item))
+                    .commit()
+            Configuration.ORIENTATION_PORTRAIT ->
+                transaction.replace(R.id.fragment, WeatherDetailsFragment.newInstance(item))
+                    .addToBackStack(null)
+                    .commit()
         }
     }
 
@@ -144,29 +136,12 @@ class MainActivity : AppCompatActivity() {
                 Configuration.ORIENTATION_PORTRAIT -> transaction.replace(R.id.fragment, WeatherListFragment.newInstance(listWeatherData))
                     .commit()
                 Configuration.ORIENTATION_LANDSCAPE -> transaction.replace(R.id.list_fragment, WeatherListFragment.newInstance(listWeatherData))
-                    .replace(R.id.details_fragment, LonelyCloudFragment()).commitAllowingStateLoss()
+                    .replace(R.id.details_fragment,
+                        LonelyCloudFragment()
+                    ).commitAllowingStateLoss()
             }
         }
         progress_bar.visibility = View.INVISIBLE
-    }
-
-    fun checkLocationPermission(): Boolean {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) !=
-            PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                    1
-                )
-            }
-            else {
-                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                    1)
-            }
-            return false
-        }
-        else return true
     }
 
     override fun onBackPressed() {

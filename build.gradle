@@ -5,6 +5,7 @@ buildscript {
     ext.moshi_version = '1.9.2'
     ext.retrofit_version = '2.5.0'
     ext.OkHttp_version = '3.0.1'
+    ext.coroutinesVersion = '1.1.1'
     repositories {
         google()
         jcenter()

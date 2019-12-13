@@ -13,7 +13,7 @@ import com.example.weather.response.Wind
 class WeatherModel(private val context: Context) {
     private val db = WeatherDBHelper(context).writableDatabase
 
-    fun insert(response: WeatherResponse?) {
+    suspend fun insert(response: WeatherResponse?) {
         if (response == null) return
         db.delete(WeatherData.WEATHER_DATA_TABLE_NAME, null, null)
         db.delete(City.CITY_TABLE_NAME, null, null)
@@ -50,7 +50,7 @@ class WeatherModel(private val context: Context) {
         }
     }
 
-    fun getWeatherResponse(): WeatherResponse {
+    suspend fun getWeatherResponse(): WeatherResponse {
         val cityCursor =  initCursor(City.CITY_TABLE_NAME)
         val weatherDataCursor = initCursor(WeatherData.WEATHER_DATA_TABLE_NAME)
         val weatherDataList = mutableListOf<com.example.weather.response.WeatherData>()
