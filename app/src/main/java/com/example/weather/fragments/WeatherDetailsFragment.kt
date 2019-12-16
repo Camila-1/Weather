@@ -33,8 +33,8 @@ class WeatherDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val item = selectedItem ?: return
 
-        val temperatureUnit = SharedPreferenceHolder.getTemperatureUnit(context!!)
-        val distanceUnit = SharedPreferenceHolder.getDistanceUnit(context!!)
+        val temperatureUnit = SharedPreferenceHolder(context!!).getTemperatureUnit
+        val distanceUnit = SharedPreferenceHolder(context!!).getDistanceUnit
         item.dateTime.let { date.text = formatDate(it, context!!) }
         icon.setImageResource(resources.getIdentifier("icon_${item.weather[0].icon}", "drawable", context?.packageName))
         item.main.temp.let { current_weather.text = Math.round(it).toString().plus(temperatureUnit) }

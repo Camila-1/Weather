@@ -49,8 +49,4 @@ class WeatherListFragment : Fragment() {
             arguments = bundleOf("list" to response)
         }
     }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
 }

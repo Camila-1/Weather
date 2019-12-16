@@ -3,7 +3,6 @@ package com.example.weather
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
@@ -12,11 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-
-import androidx.core.app.ActivityCompat
-import androidx.lifecycle.Observer
 import androidx.preference.PreferenceManager
-import androidx.work.*
 import com.example.weather.db.WeatherModel
 import com.example.weather.fragments.LonelyCloudFragment
 import com.example.weather.fragments.WeatherDetailsFragment
@@ -25,23 +20,24 @@ import com.example.weather.response.WeatherData
 import com.example.weather.response.WeatherResponse
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
-
     companion object {
         private val REQUEST_CODE = 1
     }
     private var checkedItem: WeatherData? = null
     private var listWeatherData: WeatherResponse? = null
+    val locationService: LocationService = LocationService(this)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
+
+        locationService.startLocationUpdates()
 
         if (listWeatherData == null)
             showWeatherData()
@@ -69,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
     fun updateWeatherData() {
         GlobalScope.launch {
-            val response = WeatherRequest(this@MainActivity).getWeatherResponseData()
+            val response = WeatherRequest(this@MainActivity, locationService).getWeatherResponseData()
             val db = WeatherModel(this@MainActivity)
             db.insert(response)
             listWeatherData = response
@@ -149,4 +145,11 @@ class MainActivity : AppCompatActivity() {
         super.onBackPressed()
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        locationService.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
 }

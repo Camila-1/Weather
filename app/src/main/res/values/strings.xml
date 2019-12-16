@@ -2,8 +2,12 @@
     <string name="app_name">Weather</string>
     <!-- settings strings -->
     <string name="title_activity_settings">Настройки</string>
+    <string name="permissions">Разрешения</string>
+    <string name="changePermission">Изменить</string>
+    <string name="location_permission_allowed">Разрешение предоставлено</string>
+    <string name="location_permission_denied">Разрешение отклонено</string>
     <string name="region">Регион</string>
-    <string name="determine_the_coordinates">Определить координаты</string>
+    <string name="determine_the_coordinates">Определить местоположение</string>
     <string name="city">Город</string>
     <string name="data">Данные</string>
     <string name="units">Единицы измерения</string>
@@ -12,6 +16,9 @@
 
     <!-- connectivity status message -->
     <string name="connectivity_status_message">Нет соединения с интернетом</string>
+
+    <!-- location permission denied message -->
+    <string name="location_permission_denied_message">Нет разрешения на определение местоположения. Пожалуйста, включите разрешение в настройках</string>
 
     <!-- details strings -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

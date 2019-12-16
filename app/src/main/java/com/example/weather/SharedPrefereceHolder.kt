@@ -3,43 +3,42 @@ package com.example.weather
 import android.content.Context
 import androidx.preference.PreferenceManager
 
-object SharedPreferenceHolder {
+class SharedPreferenceHolder(context: Context) {
+    private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private val preferenceEditor = preferences.edit()
 
-    fun getTemperatureUnit(context: Context): String {
-        val preference = PreferenceManager.getDefaultSharedPreferences(context)
-        return when (preference.getString("units", "")) {
-            "metric" -> " °C"
-            "imperial" -> " °F"
-            else -> ""
+    val getTemperatureUnit = preferences.getString("units", "")
+        get() {
+            return when (field) {
+                "metric" -> " °C"
+                "imperial" -> " °F"
+                else -> ""
+            }
         }
-    }
-
-    fun getDistanceUnit(context: Context): String {
-        val preference = PreferenceManager.getDefaultSharedPreferences(context)
-        return when (preference.getString("units", "")) {
-            "metric" -> " М/с"
-            "imperial" -> " Миль/час"
-            else -> ""
+    val getDistanceUnit = preferences.getString("units", "")
+        get() {
+            return when (field) {
+                "metric" -> " М/с"
+                "imperial" -> " Миль/час"
+                else -> ""
+            }
         }
-    }
 
-    fun isGeolocationEnabled(context: Context): Boolean {
-        val preference = PreferenceManager.getDefaultSharedPreferences(context)
-        return preference.getBoolean("coordinates", true)
-    }
+    var isGeolocationEnabled = preferences.getBoolean("coordinates", true)
+        set(value) = preferenceEditor.putBoolean("coordinates", value).apply()
 
-    fun getUnit(context: Context): String {
-        val preference = PreferenceManager.getDefaultSharedPreferences(context)
-        return preference.getString("units", "").toString()
-    }
+    val getUnit = preferences.getString("units", "").toString()
 
-    fun getLang(context: Context): String {
-        val preference = PreferenceManager.getDefaultSharedPreferences(context)
-        return preference.getString("lang", "").toString()
-    }
+    val getLang = preferences.getString("lang", "").toString()
 
-    fun getCity(context: Context): String {
-        val preference = PreferenceManager.getDefaultSharedPreferences(context)
-        return preference.getString("city", "")!!
-    }
+    val getCity = preferences.getString("city", "")
+
+    var coordinates = mapOf("lon" to preferences.getString("lon", ""),
+        "lat" to preferences.getString("lat", ""))
+        set(value) {
+            field = value
+            preferenceEditor.putString("lon", value.get("lon"))
+                .putString("lat", value.get("lat"))
+                .apply()
+        }
 }
