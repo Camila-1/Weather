@@ -117,15 +117,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun popBackStack() {
+        if (supportFragmentManager.backStackEntryCount > 0)
+            supportFragmentManager.popBackStack()
+    }
+
     private fun render(item: WeatherData?) {
+        progress_bar.visibility = View.INVISIBLE
         val transaction = supportFragmentManager.beginTransaction()
         val orientation: Int = resources.configuration.orientation
         if( checkedItem != null) {
             when (orientation) {
                 Configuration.ORIENTATION_PORTRAIT -> transaction.replace(R.id.fragment, WeatherDetailsFragment.newInstance(item))
+                    .addToBackStack(null)
                     .commit()
-                Configuration.ORIENTATION_LANDSCAPE -> transaction.replace(R.id.list_fragment, WeatherListFragment.newInstance(listWeatherData))
-                    .replace(R.id.details_fragment, WeatherDetailsFragment.newInstance(item)).commit()
+                Configuration.ORIENTATION_LANDSCAPE -> {
+                    transaction.replace(R.id.list_fragment, WeatherListFragment.newInstance(listWeatherData))
+                        .replace(R.id.details_fragment, WeatherDetailsFragment.newInstance(item)).commit()
+                    popBackStack()
+                }
             }
         } else {
             when (orientation) {
@@ -137,7 +147,6 @@ class MainActivity : AppCompatActivity() {
                     ).commitAllowingStateLoss()
             }
         }
-        progress_bar.visibility = View.INVISIBLE
     }
 
     override fun onBackPressed() {
