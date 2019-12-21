@@ -5,12 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.ConnectivityManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.example.weather.db.WeatherModel
 import com.example.weather.fragments.LonelyCloudFragment
@@ -19,8 +19,7 @@ import com.example.weather.fragments.WeatherListFragment
 import com.example.weather.response.WeatherData
 import com.example.weather.response.WeatherResponse
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     }
     private var checkedItem: WeatherData? = null
     private var listWeatherData: WeatherResponse? = null
-    val locationService: LocationService = LocationService(this)
+    private val locationService: LocationService = LocationService(this)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,23 +37,30 @@ class MainActivity : AppCompatActivity() {
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
 
         locationService.startLocationUpdates()
-
-        if (listWeatherData == null)
-            showWeatherData()
+        showWeatherData()
 
         checkedItem = savedInstanceState?.getParcelable("item")
+        supportActionBar?.title = null
     }
 
     fun showWeatherData() {
-        if (hasNetworkConnection(this))
-            updateWeatherData()
-        else {
-            GlobalScope.launch {
-                listWeatherData = WeatherModel(this@MainActivity).getWeatherResponse()
-                render(checkedItem)
+        when {
+            listWeatherData != null -> {
+                return
             }
-            Toast.makeText(this, R.string.connectivity_status_message, Toast.LENGTH_LONG).show()
+            hasNetworkConnection(this) -> updateWeatherData()
+            else -> {
+                GlobalScope.launch(Dispatchers.Main){
+                    listWeatherData = WeatherModel(this@MainActivity).getWeatherResponse()
+                    render(checkedItem)
+                }
+                Toast.makeText(this, R.string.connectivity_status_message, Toast.LENGTH_LONG).show()
+            }
         }
+    }
+
+    private fun setTitleName() {
+        supportActionBar?.title = listWeatherData?.city?.name ?: SharedPreferenceHolder(this).getCity
     }
 
     fun hasNetworkConnection(context: Context): Boolean {
@@ -64,10 +70,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun updateWeatherData() {
-        GlobalScope.launch {
+        GlobalScope.launch(Dispatchers.Main) {
             val response = WeatherRequest(this@MainActivity, locationService).getWeatherResponseData()
-            val db = WeatherModel(this@MainActivity)
-            db.insert(response)
+            WeatherModel(this@MainActivity).insert(response)
             listWeatherData = response
             render(checkedItem)
         }
@@ -124,6 +129,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun render(item: WeatherData?) {
         progress_bar.visibility = View.INVISIBLE
+        setTitleName()
+
         val transaction = supportFragmentManager.beginTransaction()
         val orientation: Int = resources.configuration.orientation
         if( checkedItem != null) {

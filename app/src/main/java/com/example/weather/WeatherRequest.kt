@@ -2,8 +2,8 @@ package com.example.weather
 
 import android.content.Context
 import com.example.weather.response.WeatherResponse
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 
 class WeatherRequest(val context: Context, val locationService: LocationService) {
@@ -11,9 +11,9 @@ class WeatherRequest(val context: Context, val locationService: LocationService)
     private val weatherService = serviceBuilder.weatherService()
 
     suspend fun getWeatherResponseData(): WeatherResponse? {
-        return GlobalScope.async {
+        return withContext(Dispatchers.IO) {
             getWeatherResponse().execute().body()
-        }.await()
+        }
     }
 
 

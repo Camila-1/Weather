@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.*
 
 
-class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener{
+class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
     val locationService = LocationService(this)
 
     private val settingsFragment = SettingsFragment()
@@ -20,9 +20,9 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
             .beginTransaction()
             .replace(R.id.settings, settingsFragment)
             .commit()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this)
 
+        actionBar
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
