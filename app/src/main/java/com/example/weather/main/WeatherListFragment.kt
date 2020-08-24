@@ -10,7 +10,7 @@ import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather.*
 import androidx.preference.PreferenceManager
-import com.example.weather.response.WeatherResponse
+import com.example.weather.network.response.WeatherResponse
 import kotlinx.android.synthetic.main.fragment_weather_list.*
 
 

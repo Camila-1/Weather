@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import com.example.weather.R
-import com.example.weather.SharedPreferenceHolder
-import com.example.weather.formatDate
-import com.example.weather.response.WeatherData
+import com.example.weather.settings.SharedPreferenceHolder
+import com.example.weather.utils.formatDate
+import com.example.weather.network.response.WeatherData
 import kotlinx.android.synthetic.main.fragment_weather_details.*
 import kotlinx.android.synthetic.main.fragment_weather_details.view.*
 

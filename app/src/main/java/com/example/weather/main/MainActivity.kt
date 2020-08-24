@@ -16,8 +16,11 @@ import com.example.weather.db.WeatherModel
 import com.example.weather.fragments.LonelyCloudFragment
 import com.example.weather.fragments.WeatherDetailsFragment
 import com.example.weather.fragments.WeatherListFragment
-import com.example.weather.response.WeatherData
-import com.example.weather.response.WeatherResponse
+import com.example.weather.network.WeatherRequest
+import com.example.weather.network.response.WeatherData
+import com.example.weather.network.response.WeatherResponse
+import com.example.weather.settings.SettingsActivity
+import com.example.weather.settings.SharedPreferenceHolder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 
@@ -28,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     }
     private var checkedItem: WeatherData? = null
     private var listWeatherData: WeatherResponse? = null
-    private val locationService: LocationService = LocationService(this)
+    private val locationService: LocationProvider = LocationProvider(this)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

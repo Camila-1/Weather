@@ -1,4 +1,4 @@
-package com.example.weather
+package com.example.weather.settings
 
 import android.content.Context
 import androidx.preference.PreferenceManager

@@ -1,7 +1,10 @@
-package com.example.weather
+package com.example.weather.network.response
 
 import android.content.Context
-import com.example.weather.response.WeatherResponse
+import com.example.weather.LocationService
+import com.example.weather.ServiceBuilder
+import com.example.weather.SharedPreferenceHolder
+import com.example.weather.network.response.WeatherResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
