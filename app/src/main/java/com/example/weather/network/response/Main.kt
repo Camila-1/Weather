@@ -1,4 +1,4 @@
-package com.example.weather.response
+package com.example.weather.network.response
 
 import android.os.Parcelable
 import com.squareup.moshi.Json

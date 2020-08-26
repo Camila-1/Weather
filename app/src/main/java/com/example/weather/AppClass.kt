@@ -2,7 +2,6 @@ package com.example.weather
 
 import android.app.Application
 import android.content.Context
-import ua.com.cuteteam.cutetaxi.R
 
 class AppClass: Application() {
 

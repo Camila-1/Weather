@@ -1,4 +1,4 @@
-package com.example.weather
+package com.example.weather.main
 
 import android.app.Activity
 import android.content.Context
@@ -9,13 +9,17 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
+import com.example.weather.LocationProvider
+import com.example.weather.R
+import com.example.weather.adapters.StateAdapter
 import com.example.weather.db.WeatherModel
 import com.example.weather.fragments.LonelyCloudFragment
-import com.example.weather.fragments.WeatherDetailsFragment
-import com.example.weather.fragments.WeatherListFragment
 import com.example.weather.network.WeatherRequest
 import com.example.weather.network.response.WeatherData
 import com.example.weather.network.response.WeatherResponse
@@ -29,138 +33,34 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private val REQUEST_CODE = 1
     }
-    private var checkedItem: WeatherData? = null
-    private var listWeatherData: WeatherResponse? = null
+
+    private val weatherViewModel by lazy {
+        ViewModelProvider(this, ViewModelFactory())
+            .get(WeatherViewModel::class.java)
+    }
+
     private val locationService: LocationProvider = LocationProvider(this)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
         setContentView(R.layout.activity_main)
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
 
         locationService.startLocationUpdates()
-        showWeatherData()
 
-        checkedItem = savedInstanceState?.getParcelable("item")
+        viewPager.adapter = StateAdapter(this)
+
         supportActionBar?.title = null
     }
 
-    fun showWeatherData() {
-        when {
-            listWeatherData != null -> {
-                return
-            }
-            hasNetworkConnection(this) -> updateWeatherData()
-            else -> {
-                GlobalScope.launch(Dispatchers.Main){
-                    listWeatherData = WeatherModel(this@MainActivity).getWeatherResponse()
-                    render(checkedItem)
-                }
-                Toast.makeText(this, R.string.connectivity_status_message, Toast.LENGTH_LONG).show()
-            }
-        }
-    }
 
-    private fun setTitleName() {
-        supportActionBar?.title = listWeatherData?.city?.name ?: SharedPreferenceHolder(this).getCity
-    }
-
-    fun hasNetworkConnection(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
-        return networkInfo != null && networkInfo.isConnectedOrConnecting
-    }
-
-    fun updateWeatherData() {
-        GlobalScope.launch(Dispatchers.Main) {
-            val response = WeatherRequest(this@MainActivity, locationService).getWeatherResponseData()
-            WeatherModel(this@MainActivity).insert(response)
-            listWeatherData = response
-            render(checkedItem)
-        }
-    }
-
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.settings, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when(item.itemId) {
-        R.id.settings -> {
-            startActivityForResult(Intent(this, SettingsActivity::class.java), REQUEST_CODE)
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if( resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE ) {
-            updateWeatherData()
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelable("item", checkedItem)
-    }
-
-    fun itemClicked(item: WeatherData) {
-        checkedItem = item
-        val fragmentManager = supportFragmentManager
-        val transaction = fragmentManager.beginTransaction()
-
-        when(resources.configuration.orientation) {
-            Configuration.ORIENTATION_LANDSCAPE ->
-                transaction.replace(R.id.list_fragment, WeatherListFragment.newInstance(listWeatherData))
-                    .replace(R.id.details_fragment, WeatherDetailsFragment.newInstance(item))
-                    .commit()
-            Configuration.ORIENTATION_PORTRAIT ->
-                transaction.replace(R.id.fragment, WeatherDetailsFragment.newInstance(item))
-                    .addToBackStack(null)
-                    .commit()
-        }
-    }
-
-    private fun popBackStack() {
-        if (supportFragmentManager.backStackEntryCount > 0)
-            supportFragmentManager.popBackStack()
-    }
-
-    private fun render(item: WeatherData?) {
-        progress_bar.visibility = View.INVISIBLE
-        setTitleName()
-
-        val transaction = supportFragmentManager.beginTransaction()
-        val orientation: Int = resources.configuration.orientation
-        if( checkedItem != null) {
-            when (orientation) {
-                Configuration.ORIENTATION_PORTRAIT -> transaction.replace(R.id.fragment, WeatherDetailsFragment.newInstance(item))
-                    .addToBackStack(null)
-                    .commit()
-                Configuration.ORIENTATION_LANDSCAPE -> {
-                    transaction.replace(R.id.list_fragment, WeatherListFragment.newInstance(listWeatherData))
-                        .replace(R.id.details_fragment, WeatherDetailsFragment.newInstance(item)).commit()
-                    popBackStack()
-                }
-            }
-        } else {
-            when (orientation) {
-                Configuration.ORIENTATION_PORTRAIT -> transaction.replace(R.id.fragment, WeatherListFragment.newInstance(listWeatherData))
-                    .commit()
-                Configuration.ORIENTATION_LANDSCAPE -> transaction.replace(R.id.list_fragment, WeatherListFragment.newInstance(listWeatherData))
-                    .replace(R.id.details_fragment,
-                        LonelyCloudFragment()
-                    ).commitAllowingStateLoss()
-            }
-        }
-    }
 
     override fun onBackPressed() {
-        checkedItem = null
         super.onBackPressed()
     }
 

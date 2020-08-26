@@ -1,4 +1,4 @@
-package com.example.weather
+package com.example.weather.network
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
@@ -15,7 +15,7 @@ class ServiceBuilder(val context: Context) {
         .build()
 
     val okHttpClient = OkHttpClient.Builder()
-        .addInterceptor(MyIntercwptor())
+        .addInterceptor(WeatherInterceptor())
         .addInterceptor(ChuckerInterceptor(context))
         .build()
 

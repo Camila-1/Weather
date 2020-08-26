@@ -4,7 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weather.response.WeatherData
+import com.example.weather.network.response.WeatherData
+import com.example.weather.settings.SharedPreferenceHolder
+import com.example.weather.utils.formatDate
 import kotlinx.android.synthetic.main.list_item.view.*
 
 

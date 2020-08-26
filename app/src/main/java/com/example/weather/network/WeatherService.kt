@@ -1,4 +1,4 @@
-package com.example.weather
+package com.example.weather.network
 
 import com.example.weather.network.response.WeatherResponse
 import retrofit2.Call

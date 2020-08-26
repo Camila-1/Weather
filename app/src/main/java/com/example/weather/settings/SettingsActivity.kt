@@ -1,4 +1,4 @@
-package com.example.weather
+package com.example.weather.settings
 
 import android.app.Activity
 import android.content.SharedPreferences
@@ -6,10 +6,12 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.*
+import com.example.weather.LocationProvider
+import com.example.weather.R
 
 
 class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
-    val locationService = LocationService(this)
+    val locationService = LocationProvider(this)
 
     private val settingsFragment = SettingsFragment()
 

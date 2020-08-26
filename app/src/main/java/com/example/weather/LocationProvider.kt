@@ -5,15 +5,17 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.*
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
+import com.example.weather.settings.SharedPreferenceHolder
 
 
-class LocationService(val activity: Activity) {
+class LocationProvider(val activity: Activity) {
     private val REQUEST_CODE = 1
 
     fun startLocationUpdates() {
@@ -21,6 +23,7 @@ class LocationService(val activity: Activity) {
             requestLocation()
     }
 
+    @SuppressLint("MissingPermission")
     fun requestLocation() {
         val fusedLocationProviderClient = FusedLocationProviderClient(activity)
         val request = createLocationRequest()

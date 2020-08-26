@@ -1,4 +1,4 @@
-package com.example.weather.fragments
+package com.example.weather.main
 
 
 import android.os.Bundle
@@ -31,16 +31,16 @@ class WeatherListFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_weather_list, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val adapter = Adapter(response?.list) {
-            (activity as MainActivity).itemClicked(it)
-        }
-        recycler_view.layoutManager = LinearLayoutManager(context)
-        recycler_view.adapter = adapter
-        swipe.setColorSchemeResources(R.color.colorPrimaryDark, R.color.colorPrimary)
-        swipe.setOnRefreshListener { (activity as MainActivity).showWeatherData() }
-    }
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//        val adapter = Adapter(response?.list) {
+//            (activity as MainActivity).itemClicked(it)
+//        }
+//        recycler_view.layoutManager = LinearLayoutManager(context)
+//        recycler_view.adapter = adapter
+//        swipe.setColorSchemeResources(R.color.colorPrimaryDark, R.color.colorPrimary)
+//        swipe.setOnRefreshListener { (activity as MainActivity).showWeatherData() }
+//    }
 
 
 

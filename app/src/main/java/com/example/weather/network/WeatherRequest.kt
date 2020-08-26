@@ -1,15 +1,14 @@
-package com.example.weather.network.response
+package com.example.weather.network
 
 import android.content.Context
-import com.example.weather.LocationService
-import com.example.weather.ServiceBuilder
-import com.example.weather.SharedPreferenceHolder
+import com.example.weather.LocationProvider
+import com.example.weather.settings.SharedPreferenceHolder
 import com.example.weather.network.response.WeatherResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 
-class WeatherRequest(val context: Context, val locationService: LocationService) {
+class WeatherRequest(val context: Context, val locationService: LocationProvider) {
     private val serviceBuilder = ServiceBuilder(context)
     private val weatherService = serviceBuilder.weatherService()
 

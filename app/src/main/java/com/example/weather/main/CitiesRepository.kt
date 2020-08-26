@@ -1,4 +1,4 @@
 package com.example.weather.main
 
-class WeatherRepository {
+interface CitiesRepository {
 }

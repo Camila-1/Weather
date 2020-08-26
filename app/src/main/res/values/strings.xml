@@ -31,4 +31,6 @@
     <string name="precipitation">Осадки</string>
     <string name="rain">Дождь</string>
     <string name="snow">Снег</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

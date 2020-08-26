@@ -1,9 +1,8 @@
-package com.example.weather.response
+package com.example.weather.network.response
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.parcel.RawValue
 
 @Parcelize
 data class WeatherData (

@@ -3,12 +3,12 @@ package com.example.weather.db
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
-import com.example.weather.response.WeatherResponse
+import com.example.weather.network.response.WeatherResponse
 import com.example.weather.db.Scheme.WeatherData
 import com.example.weather.db.Scheme.City
-import com.example.weather.response.Main
-import com.example.weather.response.Weather
-import com.example.weather.response.Wind
+import com.example.weather.network.response.Main
+import com.example.weather.network.response.Weather
+import com.example.weather.network.response.Wind
 import kotlinx.coroutines.Dispatchers
 
 import kotlinx.coroutines.withContext
@@ -59,18 +59,18 @@ class WeatherModel(private val context: Context) {
         return withContext(Dispatchers.IO) {
             val cityCursor =  initCursor(City.CITY_TABLE_NAME)
             val weatherDataCursor = initCursor(WeatherData.WEATHER_DATA_TABLE_NAME)
-            val weatherDataList = mutableListOf<com.example.weather.response.WeatherData>()
+            val weatherDataList = mutableListOf<com.example.weather.network.response.WeatherData>()
 
             while (weatherDataCursor.moveToNext()) {
                 weatherDataList.add(createWeatherData(weatherDataCursor))
             }
 
             val city = if (cityCursor.moveToNext()) {
-                com.example.weather.response.City(
+                com.example.weather.network.response.City(
                     id = cityCursor.getInt(cityCursor.getColumnIndex(City.ID)),
                     name = cityCursor.getString(cityCursor.getColumnIndex(City.NAME))
                 )
-            } else com.example.weather.response.City(
+            } else com.example.weather.network.response.City(
                 id = 0,
                 name = ""
             )
@@ -85,8 +85,8 @@ class WeatherModel(private val context: Context) {
         }
     }
 
-    fun createWeatherData(cursor: Cursor): com.example.weather.response.WeatherData {
-        return com.example.weather.response.WeatherData(
+    fun createWeatherData(cursor: Cursor): com.example.weather.network.response.WeatherData {
+        return com.example.weather.network.response.WeatherData(
             dateTime = cursor.getLong(cursor.getColumnIndex(WeatherData.DT)),
             main = Main(
                 temp = cursor.getDouble(cursor.getColumnIndex(WeatherData.TEMPERATURE)),
