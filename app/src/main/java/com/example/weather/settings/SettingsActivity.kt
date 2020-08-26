@@ -56,7 +56,7 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
         fun toggleSwitch(hasLocationPermission: Boolean) {
             val locationPreference = preferenceScreen.findPreference<SwitchPreferenceCompat>("coordinates")
             locationPreference?.isChecked = if (!hasLocationPermission) false
-            else SharedPreferenceHolder(context!!).isGeolocationEnabled
+            else SharedPreferenceHolder(requireContext()).isGeolocationEnabled
         }
     }
 }

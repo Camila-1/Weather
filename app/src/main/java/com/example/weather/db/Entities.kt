@@ -1,16 +1,17 @@
 package com.example.weather.db
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "cities")
 data class City(
-    val id: Int,
+    @PrimaryKey val id: Int,
     val name: String
 )
 
 @Entity(tableName = "weather")
 data class Weather(
-    val id: Int,
+    @PrimaryKey val id: Int,
     val city_id: Int,
     val date_time: String,
     val clouds: Double,

@@ -1,16 +1,17 @@
 package com.example.weather.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
 interface CitiesDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(city: City)
+    suspend fun insert(city: City)
 
-    @Delete
-    fun delete()
+//    @Delete
+//    suspend fun delete()
 
     @Query("SELECT * FROM cities")
-    fun cities()
+    fun cities(): LiveData<List<City>>
 }
