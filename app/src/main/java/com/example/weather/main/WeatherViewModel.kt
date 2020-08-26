@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.weather.network.response.WeatherData
 import com.example.weather.network.response.WeatherResponse
 
-class WeatherViewModel(repository: CitiesRepositoryImpl) : ViewModel() {
+class WeatherViewModel(repository: CitiesRepository) : ViewModel() {
 
     var listWeatherData: WeatherResponse? = null
 

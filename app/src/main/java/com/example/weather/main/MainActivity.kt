@@ -18,7 +18,6 @@ import androidx.preference.PreferenceManager
 import com.example.weather.LocationProvider
 import com.example.weather.R
 import com.example.weather.adapters.StateAdapter
-import com.example.weather.db.WeatherModel
 import com.example.weather.fragments.LonelyCloudFragment
 import com.example.weather.network.WeatherRequest
 import com.example.weather.network.response.WeatherData
