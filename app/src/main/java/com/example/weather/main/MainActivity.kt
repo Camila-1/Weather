@@ -1,6 +1,9 @@
 package com.example.weather.main
 
+import android.content.Context
 import android.os.Bundle
+import android.util.AttributeSet
+import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -33,17 +36,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
 
-        locationService.startLocationUpdates()
-
-        viewPager.adapter = StateAdapter(this)
-
-        supportActionBar?.title = null
-    }
-
-
-
-    override fun onBackPressed() {
-        super.onBackPressed()
+        citiesViewModel.cities.observe(this, {
+            viewPager.adapter = StateAdapter(this, it)
+        })
     }
 
     override fun onRequestPermissionsResult(

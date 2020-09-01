@@ -1,5 +1,6 @@
 package com.example.weather.db
 
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -13,16 +14,15 @@ abstract class WeatherDataBase : RoomDatabase() {
     abstract fun weatherDao(): WeatherDao
 
     companion object {
-        private var INSTANCE: WeatherDataBase? = null
+        private lateinit var INSTANCE: WeatherDataBase
 
-        fun database(): WeatherDataBase? {
-            val tempInstance = INSTANCE
+        fun database(context: Context): WeatherDataBase {
 
-            if (tempInstance != null) return tempInstance
+            if (::INSTANCE.isInitialized) return INSTANCE
 
             synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    AppClass.appContext(),
+                    context,
                     WeatherDataBase::class.java,
                     "weather_database"
                 ).build()

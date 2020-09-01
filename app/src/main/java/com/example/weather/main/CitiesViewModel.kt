@@ -8,8 +8,7 @@ class CitiesViewModel(repository: CitiesRepository) : ViewModel() {
 
     var listWeatherData: WeatherResponse? = null
 
-    private var checkedItem: WeatherData? = null
-
+    val cities = repository.cities
 
 
 
