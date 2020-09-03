@@ -1,8 +1,8 @@
 package com.example.weather.main
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.weather.db.CitiesDao
-import dagger.Binds
 import dagger.MapKey
 import dagger.Module
 import dagger.Provides
@@ -10,15 +10,16 @@ import dagger.multibindings.IntoMap
 import javax.inject.Provider
 import javax.inject.Singleton
 import kotlin.reflect.KClass
-import androidx.lifecycle.ViewModel as ViewModel1
 
 @MustBeDocumented
-@Target(AnnotationTarget.FUNCTION,
+@Target(
+    AnnotationTarget.FUNCTION,
     AnnotationTarget.PROPERTY_GETTER,
-    AnnotationTarget.PROPERTY_SETTER)
+    AnnotationTarget.PROPERTY_SETTER
+)
 @Retention(AnnotationRetention.RUNTIME)
 @MapKey
-annotation class ViewModelKey(val value: KClass<out ViewModel1>)
+annotation class ViewModelKey(val value: KClass<out ViewModel>)
 
 @Module(includes = [RepositoryModule::class])
 class ViewModelModule {
@@ -26,20 +27,20 @@ class ViewModelModule {
     @Singleton
     @Provides
     fun provideViewModelFactory(
-        providers: MutableMap<Class<out ViewModel1>, @JvmSuppressWildcards Provider<ViewModel1>>
+        providers: MutableMap<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
     ): ViewModelProvider.Factory {
         return object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel1?> create(modelClass: Class<T>): T {
-                return requireNotNull(providers[modelClass as Class<out ViewModel1>]).get() as T
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return requireNotNull(providers[modelClass as Class<out ViewModel>]).get() as T
             }
         }
     }
 
     @Provides
-    @ViewModelKey(CitiesViewModel::class)
     @IntoMap
-    fun provideCitiesViewModel(citiesRepository: CitiesRepository): CitiesViewModel {
+    @ViewModelKey(CitiesViewModel::class)
+    fun provideCitiesViewModel(citiesRepository: CitiesRepository): ViewModel {
         return CitiesViewModel(citiesRepository)
     }
 }

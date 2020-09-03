@@ -12,6 +12,7 @@ import androidx.preference.PreferenceManager
 import com.example.weather.LocationProvider
 import com.example.weather.R
 import com.example.weather.adapters.StateAdapter
+import com.example.weather.application.WeatherApplication
 import com.example.weather.extensions.injectViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import com.example.weather.permissions.PermissionProvider
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var citiesViewModel: CitiesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        WeatherApplication.appComponent.inject(this)
         super.onCreate(savedInstanceState)
 
         citiesViewModel = injectViewModel(viewModelFactory)

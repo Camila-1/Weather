@@ -2,7 +2,6 @@ package com.example.weather.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LiveData
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.weather.WeatherFragment
 import com.example.weather.db.City

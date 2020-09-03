@@ -1,16 +1,14 @@
 package com.example.weather.main
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.weather.db.WeatherDataBase
 import java.lang.IllegalArgumentException
 import javax.inject.Inject
 import javax.inject.Provider
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory @Inject constructor(
-    private val viewModels: MutableMap<Class<out ViewModel>, Provider<ViewModel>>
+    private val viewModels: MutableMap<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

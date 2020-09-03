@@ -1,9 +1,10 @@
-package com.example.weather
+package com.example.weather.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.weather.R
 import com.example.weather.network.response.WeatherData
 import com.example.weather.settings.SharedPreferenceHolder
 import com.example.weather.utils.formatDate
@@ -31,7 +32,7 @@ class Adapter(private val items: List<WeatherData>?, private val callback: (Weat
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(items?.get(position), callback)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder  = with(parent){
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = with(parent){
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.list_item, this, false))
     }
 
