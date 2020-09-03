@@ -2,8 +2,9 @@ package com.example.weather.settings
 
 import android.content.Context
 import androidx.preference.PreferenceManager
+import javax.inject.Inject
 
-class SharedPreferenceHolder(context: Context) {
+class SharedPreferenceHolder @Inject constructor(context: Context) {
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val preferenceEditor = preferences.edit()
 

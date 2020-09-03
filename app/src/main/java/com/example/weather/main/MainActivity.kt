@@ -7,28 +7,35 @@ import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceManager
 import com.example.weather.LocationProvider
 import com.example.weather.R
 import com.example.weather.adapters.StateAdapter
+import com.example.weather.extensions.injectViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import com.example.weather.permissions.PermissionProvider
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
-    companion object {
-        private val REQUEST_CODE = 1
-    }
 
-    private val citiesViewModel by lazy {
-        ViewModelProvider(this, ViewModelFactory())
-            .get(CitiesViewModel::class.java)
-    }
+    @Inject
+    lateinit var permissionProvider: PermissionProvider
 
-    private val locationService: LocationProvider = LocationProvider(this)
+    @Inject
+    lateinit var locationProvider: LocationProvider
 
+    //FIXME: viewModelFactory HAS NOT BEEN INITIALIZED
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    lateinit var citiesViewModel: CitiesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        citiesViewModel = injectViewModel(viewModelFactory)
 
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -46,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        locationService.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        permissionProvider.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

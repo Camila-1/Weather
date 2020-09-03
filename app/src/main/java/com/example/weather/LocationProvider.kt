@@ -1,91 +1,53 @@
 package com.example.weather
 
-import android.content.pm.PackageManager
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.google.android.gms.location.*
-import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.AlertDialog
-import android.content.DialogInterface
-import android.os.Looper
-import android.util.Log
-import android.widget.Toast
-import com.example.weather.settings.SharedPreferenceHolder
+import android.content.Context
+import android.location.Location
+import android.location.LocationManager
+import com.google.android.gms.tasks.Task
+import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 
-class LocationProvider(val activity: Activity) {
-    private val REQUEST_CODE = 1
+class LocationProvider (
+    private val context: Context,
+    private val fusedLocationProviderClient: FusedLocationProviderClient
+) {
 
-    fun startLocationUpdates() {
-        if (hasLocationPermission())
-            requestLocation()
+    private val locationRequest = LocationRequest.create().apply {
+        interval = 10000
+        fastestInterval = 5000
+        priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
 
     @SuppressLint("MissingPermission")
-    fun requestLocation() {
-        val fusedLocationProviderClient = FusedLocationProviderClient(activity)
-        val request = createLocationRequest()
-        val callback: LocationCallback = object : LocationCallback() {
-            override fun onLocationResult(result: LocationResult?) {
-                result ?: return
-                result.lastLocation ?: return
-                val location = result.lastLocation
-                SharedPreferenceHolder(activity).coordinates = mapOf("lon" to location.longitude.toString(), "lat" to location.latitude.toString())
-                fusedLocationProviderClient.removeLocationUpdates(this)
-            }
-        }
-        fusedLocationProviderClient.requestLocationUpdates(request, callback, Looper.getMainLooper())
+    val lastLocation: Task<Location> = fusedLocationProviderClient.lastLocation
+
+    @SuppressLint("MissingPermission")
+    fun requestLocationUpdates(locationCallback: LocationCallback): Task<Void>? {
+        return fusedLocationProviderClient
+            .requestLocationUpdates(locationRequest, locationCallback, null)
     }
 
-    fun createLocationRequest():LocationRequest {
-        return LocationRequest.create().apply {
-            interval = 10000
-            fastestInterval = 5000
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
+    fun removeLocationUpdates(locationCallback: LocationCallback) {
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
     }
 
-    fun requestPermission() {
-        ActivityCompat.requestPermissions(activity,
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-            REQUEST_CODE)
-    }
-
-    fun hasLocationPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-    }
-
-    fun isPermissionDenied(): Boolean {
-        return ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED ||
-                ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_DENIED
-    }
-
-    fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        Log.i("permissions", grantResults.toString())
-        if (requestCode != REQUEST_CODE || permissions.isEmpty()) return
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            SharedPreferenceHolder(activity).isGeolocationEnabled = true
-            requestLocation()
-        }
-        else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION) ||
-                ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                val listener = DialogInterface.OnClickListener {dialog, _ ->
-                    dialog.cancel()
-                    requestPermission()
+    suspend fun getLocation(): Location? {
+        return suspendCoroutine {
+            requestLocationUpdates(object : LocationCallback() {
+                override fun onLocationResult(result: LocationResult?) {
+                    it.resume(result?.lastLocation)
+                    removeLocationUpdates(this)
                 }
-                AlertDialog.Builder(activity)
-                    .setTitle("title")
-                    .setMessage("message")
-                    .setNegativeButton("No", null)
-                    .setPositiveButton("Ok", listener)
-            }
-            else {
-                Toast.makeText(activity, R.string.location_permission_denied_message, Toast.LENGTH_LONG).show()
-            }
+            })
         }
+    }
+
+    fun isGPSEnabled(): Boolean {
+        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 }
