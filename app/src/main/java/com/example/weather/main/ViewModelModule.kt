@@ -1,6 +1,5 @@
 package com.example.weather.main
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.weather.db.CitiesDao
 import dagger.Binds
@@ -8,7 +7,10 @@ import dagger.MapKey
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
+import javax.inject.Provider
+import javax.inject.Singleton
 import kotlin.reflect.KClass
+import androidx.lifecycle.ViewModel as ViewModel1
 
 @MustBeDocumented
 @Target(AnnotationTarget.FUNCTION,
@@ -16,18 +18,30 @@ import kotlin.reflect.KClass
     AnnotationTarget.PROPERTY_SETTER)
 @Retention(AnnotationRetention.RUNTIME)
 @MapKey
-annotation class ViewModelKey(val value: KClass<out ViewModel>)
+annotation class ViewModelKey(val value: KClass<out ViewModel1>)
 
 @Module(includes = [RepositoryModule::class])
-abstract class ViewModelModule {
+class ViewModelModule {
 
-    @Binds
-    internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+    @Singleton
+    @Provides
+    fun provideViewModelFactory(
+        providers: MutableMap<Class<out ViewModel1>, @JvmSuppressWildcards Provider<ViewModel1>>
+    ): ViewModelProvider.Factory {
+        return object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel1?> create(modelClass: Class<T>): T {
+                return requireNotNull(providers[modelClass as Class<out ViewModel1>]).get() as T
+            }
+        }
+    }
 
-    @Binds
+    @Provides
     @ViewModelKey(CitiesViewModel::class)
     @IntoMap
-    internal abstract fun bindCitiesViewModel(citiesViewModel: CitiesViewModel): ViewModel
+    fun provideCitiesViewModel(citiesRepository: CitiesRepository): CitiesViewModel {
+        return CitiesViewModel(citiesRepository)
+    }
 }
 
 @Module
