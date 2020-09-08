@@ -18,6 +18,6 @@ data class AccessFineLocationPermission (val context: Context) : Permission {
         get() = context.getString(R.string.location_permission_required_dialog_title)
     override val requiredPermissionDialogMessage: String
         get() = context.getString(R.string.location_permission_required_dialog_message)
-
 }
+
 
