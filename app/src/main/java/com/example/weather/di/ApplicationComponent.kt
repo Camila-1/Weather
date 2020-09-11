@@ -1,7 +1,9 @@
 package com.example.weather.di
 
-import android.app.Activity
 import android.app.Application
+import com.example.weather.city_management.CityManagementFragment
+import com.example.weather.city_management.CitySearchFragment
+import com.example.weather.city_weather.CityWeatherFragment
 import com.example.weather.db.RoomModule
 import com.example.weather.main.MainActivity
 import com.example.weather.main.ViewModelModule
@@ -32,4 +34,7 @@ interface ApplicationComponent {
     }
 
     fun inject(activity: MainActivity)
+    fun inject(fragment: CityManagementFragment)
+    fun inject(fragment: CityWeatherFragment)
+    fun inject(searchFragment: CitySearchFragment)
 }

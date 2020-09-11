@@ -1,5 +1,6 @@
 package com.example.weather.network
 
+import com.example.weather.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -8,7 +9,7 @@ class WeatherInterceptor : Interceptor{
         return chain.proceed(
             chain.request().newBuilder().url(
                 chain.request().url.newBuilder()
-                    .addQueryParameter("appid", "2ba37aa25a1076c15ae993cb5de372d6")
+                    .addQueryParameter("appid", BuildConfig.OPEN_WEATHER_KEY)
                     .build()
             ).build()
         )

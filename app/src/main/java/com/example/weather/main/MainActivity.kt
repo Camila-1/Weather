@@ -2,52 +2,35 @@ package com.example.weather.main
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.service.autofill.Validators.or
-import android.util.Log
 import android.view.*
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.marginTop
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.preference.PreferenceManager
-import com.example.weather.LocationProvider
 import com.example.weather.R
-import com.example.weather.adapters.StateAdapter
 import com.example.weather.application.WeatherApplication
-import com.example.weather.db.City
+import com.example.weather.city_management.CityManagementFragment
+import com.example.weather.city_management.EventViewModel
+import com.example.weather.city_management.CitySearchFragment
+import com.example.weather.city_weather.CityWeatherFragment
 import com.example.weather.extensions.injectViewModel
-import kotlinx.android.synthetic.main.activity_main.*
-import com.example.weather.permissions.PermissionProvider
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.fragment_weather.*
 import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var permissionProvider: PermissionProvider
-
-    @Inject
-    lateinit var locationProvider: LocationProvider
-
-    @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    lateinit var citiesViewModel: CitiesViewModel
+    lateinit var eventViewModel: EventViewModel
 
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         WeatherApplication.appComponent.inject(this)
 
+        eventViewModel = injectViewModel(viewModelFactory)
+
         super.onCreate(savedInstanceState)
-
-        citiesViewModel = injectViewModel(viewModelFactory)
-
-        citiesViewModel.addCity(City(1, "Tashkent"))
 
         window.apply {
             clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -60,33 +43,18 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        setSupportActionBar(toolbar)
-        toolbar.setNavigationIcon(R.drawable.plus)
+        eventViewModel.state.observe(this, Observer {
 
-        citiesViewModel.cities.observe(this, {
-            viewPager.adapter = StateAdapter(this, it)
+            val transaction = supportFragmentManager.beginTransaction()
+            when(it) {
+                EventViewModel.State.CITY_MANAGEMENT_FRAGMENT -> transaction
+                    .replace(R.id.fragment_container, CityManagementFragment()).commit()
+                EventViewModel.State.CITY_WEATHER_FRAGMENT -> transaction
+                    .replace(R.id.fragment_container, CityWeatherFragment()).commit()
+                EventViewModel.State.SEARCH_CITY -> transaction
+                    .replace(R.id.fragment_container, CitySearchFragment()).commit()
+                else -> {}
+            }
         })
-
-
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        permissionProvider.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
-            R.id.add_city_icon -> { true }
-            R.id.settings -> { true }
-            else -> { super.onOptionsItemSelected(item) }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-        return super.onCreateOptionsMenu(menu)
     }
 }

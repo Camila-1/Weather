@@ -24,18 +24,7 @@ class WeatherFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        ViewCompat.setOnApplyWindowInsetsListener(content) { _, insets ->
-//            Log.d("topInset", insets.systemWindowInsetTop.toString())
-//            Log.d("bottomInset", insets.systemWindowInsetBottom.toString())
-//            //and so on for left and right insets
-//            insets.consumeSystemWindowInsets()
-//        }
-//
-//        ViewCompat.setOnApplyWindowInsetsListener(content) { _, insets ->
-//            val layoutParams = content.layoutParams as ViewGroup.MarginLayoutParams
-//            layoutParams.setMargins(0, insets.systemWindowInsetTop, 0, 0)
-//            insets.consumeSystemWindowInsets()
-//        }
+
     }
 
 }

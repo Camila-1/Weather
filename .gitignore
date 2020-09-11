@@ -57,7 +57,8 @@ captures/
 .externalNativeBuild
 
 # Google Services (e.g. APIs or Firebase)
-# google-services.json
+app/google-services.json
+/secrets.gradle
 
 # Freeline
 freeline.py
@@ -80,3 +81,4 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+

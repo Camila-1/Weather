@@ -2,6 +2,7 @@ package com.example.weather.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.weather.city_management.EventViewModel
 import com.example.weather.db.CitiesDao
 import dagger.MapKey
 import dagger.Module
@@ -42,6 +43,14 @@ class ViewModelModule {
     @ViewModelKey(CitiesViewModel::class)
     fun provideCitiesViewModel(citiesRepository: CitiesRepository): ViewModel {
         return CitiesViewModel(citiesRepository)
+    }
+
+    @Provides
+    @Singleton
+    @IntoMap
+    @ViewModelKey(EventViewModel::class)
+    fun provideEventViewModel(): ViewModel {
+        return EventViewModel()
     }
 }
 

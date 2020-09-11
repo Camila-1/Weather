@@ -6,6 +6,12 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'com.google.gms.google-services'
+
+apply plugin: 'com.google.firebase.crashlytics'
+
+apply from: '../secrets.gradle'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -23,6 +29,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildTypes.each {
+        it.buildConfigField('String', 'GOOGLE_API_KEY', "\"${GOOGLE_API_KEY}\"")
+        it.buildConfigField('String', 'OPEN_WEATHER_KEY', "\"${OPEN_WEATHER_KEY}\"")
+    }
+
     compileOptions {
         targetCompatibility = "8"
         sourceCompatibility = "8"
@@ -53,8 +65,12 @@ dependencies {
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
     debugImplementation "com.github.ChuckerTeam.Chucker:library:3.2.0"
     releaseImplementation "com.github.ChuckerTeam.Chucker:library-no-op:3.2.0"
-    implementation 'com.google.android.material:material:1.2.0'
+
+    //Firebase
     implementation 'com.google.firebase:firebase-analytics:17.5.0'
+    implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
+
+
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.7"
     implementation 'com.google.android.gms:play-services-location:17.0.0'
@@ -71,6 +87,7 @@ dependencies {
 
     //EasyPermissions
     implementation 'pub.devrel:easypermissions:3.0.0'
-}
 
-apply plugin: 'com.google.gms.google-services'
+    // Material
+    implementation "com.google.android.material:material:1.2.1"
+}

@@ -32,7 +32,7 @@ class SharedPreferenceHolder @Inject constructor(context: Context) {
 
     val getLang = preferences.getString("lang", "").toString()
 
-    val getCity = preferences.getString("city", "")
+    val getCity = preferences.getString("city_item", "")
 
     var coordinates = mapOf("lon" to preferences.getString("lon", ""),
         "lat" to preferences.getString("lat", ""))
