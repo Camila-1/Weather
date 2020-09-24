@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.weather.R
 import com.example.weather.application.WeatherApplication
 import com.example.weather.city_management.CityManagementFragment
-import com.example.weather.city_management.EventViewModel
 import com.example.weather.city_management.CitySearchFragment
 import com.example.weather.city_weather.CityWeatherFragment
 import com.example.weather.extensions.injectViewModel

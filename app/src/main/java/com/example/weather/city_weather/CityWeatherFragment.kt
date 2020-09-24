@@ -11,11 +11,10 @@ import com.example.weather.LocationProvider
 import com.example.weather.R
 import com.example.weather.adapters.StateAdapter
 import com.example.weather.application.WeatherApplication
-import com.example.weather.city_management.CityManagementFragment
-import com.example.weather.city_management.EventViewModel
+import com.example.weather.main.EventViewModel
 import com.example.weather.db.City
 import com.example.weather.extensions.injectViewModel
-import com.example.weather.main.CitiesViewModel
+import com.example.weather.city_management.CitiesManagementViewModel
 import com.example.weather.permissions.PermissionProvider
 import kotlinx.android.synthetic.main.fragment_city_weather.*
 import javax.inject.Inject
@@ -32,7 +31,7 @@ class CityWeatherFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    lateinit var citiesViewModel: CitiesViewModel
+    lateinit var citiesViewModel: CitiesManagementViewModel
 
     lateinit var eventViewModel: EventViewModel
 

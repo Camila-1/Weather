@@ -6,9 +6,9 @@ import com.example.weather.city_management.CitySearchFragment
 import com.example.weather.city_weather.CityWeatherFragment
 import com.example.weather.db.RoomModule
 import com.example.weather.main.MainActivity
-import com.example.weather.main.ViewModelModule
 import com.example.weather.network.NetworkModule
 import com.example.weather.permissions.PermissionModule
+import com.example.weather.settings.SettingsModule
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -19,7 +19,8 @@ import javax.inject.Singleton
     CoreModule::class,
     PermissionModule::class,
     ViewModelModule::class,
-    RoomModule::class
+    RoomModule::class,
+    SettingsModule::class
 ])
 interface ApplicationComponent {
 

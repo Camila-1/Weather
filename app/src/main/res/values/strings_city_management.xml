@@ -2,5 +2,8 @@
 <resources>
 
     <string name="enter_the_city_name">Enter the city name</string>
+    <string name="add_city">Add</string>
+    <string name="city_added">Added</string>
+    <string name="nothing_found">Nothing found</string>
 
 </resources>

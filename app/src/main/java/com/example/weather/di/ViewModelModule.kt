@@ -1,9 +1,10 @@
-package com.example.weather.main
+package com.example.weather.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.weather.city_management.EventViewModel
-import com.example.weather.db.CitiesDao
+import com.example.weather.city_management.CitiesManagementViewModel
+import com.example.weather.main.EventViewModel
+import com.example.weather.city_management.ManagementRepository
 import dagger.MapKey
 import dagger.Module
 import dagger.Provides
@@ -40,9 +41,9 @@ class ViewModelModule {
 
     @Provides
     @IntoMap
-    @ViewModelKey(CitiesViewModel::class)
-    fun provideCitiesViewModel(citiesRepository: CitiesRepository): ViewModel {
-        return CitiesViewModel(citiesRepository)
+    @ViewModelKey(CitiesManagementViewModel::class)
+    fun provideCitiesViewModel(citiesRepository: ManagementRepository): ViewModel {
+        return CitiesManagementViewModel(citiesRepository)
     }
 
     @Provides
@@ -51,14 +52,5 @@ class ViewModelModule {
     @ViewModelKey(EventViewModel::class)
     fun provideEventViewModel(): ViewModel {
         return EventViewModel()
-    }
-}
-
-@Module
-class RepositoryModule {
-
-    @Provides
-    fun provideCitiesRepository(citiesDao: CitiesDao): CitiesRepository {
-        return CitiesListRepository(citiesDao)
     }
 }

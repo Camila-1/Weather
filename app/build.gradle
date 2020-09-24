@@ -17,7 +17,7 @@ android {
     buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.example.weather"
-        minSdkVersion 23
+        minSdkVersion 26
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -36,8 +36,12 @@ android {
     }
 
     compileOptions {
-        targetCompatibility = "8"
-        sourceCompatibility = "8"
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
     }
 }
 repositories {
@@ -90,4 +94,9 @@ dependencies {
 
     // Material
     implementation "com.google.android.material:material:1.2.1"
+
+    //Arrow
+    implementation "io.arrow-kt:arrow-core:0.11.0"
+    implementation "io.arrow-kt:arrow-syntax:0.11.0"
+    kapt    "io.arrow-kt:arrow-meta:0.11.0"
 }

@@ -1,12 +1,17 @@
-package com.example.weather.network.response
+package com.example.weather.network.weather_api.response
 
 import android.os.Parcelable
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 
 @JsonClass(generateAdapter = true)
-@Parcelize
 data class WeatherResponse (
     val city: City,
     val list: List<WeatherData>
-): Parcelable
+) {
+    fun presentDay() {
+        list.forEach {
+            it.dateTime
+        }
+    }
+}
