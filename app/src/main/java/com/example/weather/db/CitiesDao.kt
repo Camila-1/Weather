@@ -9,8 +9,8 @@ interface CitiesDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(city: City)
 
-//    @Delete
-//    suspend fun delete()
+    @Query("SELECT * FROM cities WHERE id = :id")
+    fun findById(id : String): City?
 
     @Query("SELECT * FROM cities")
     fun cities(): LiveData<List<City>>

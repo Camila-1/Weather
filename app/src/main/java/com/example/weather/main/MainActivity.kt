@@ -11,6 +11,7 @@ import com.example.weather.R
 import com.example.weather.application.WeatherApplication
 import com.example.weather.city_management.CityManagementFragment
 import com.example.weather.city_management.CitySearchFragment
+import com.example.weather.city_management.WeatherDetailsFragment
 import com.example.weather.city_weather.CityWeatherFragment
 import com.example.weather.extensions.injectViewModel
 import javax.inject.Inject
@@ -45,14 +46,18 @@ class MainActivity : AppCompatActivity() {
         eventViewModel.state.observe(this, Observer {
 
             val transaction = supportFragmentManager.beginTransaction()
-            when(it) {
+            when (it) {
                 EventViewModel.State.CITY_MANAGEMENT_FRAGMENT -> transaction
                     .replace(R.id.fragment_container, CityManagementFragment()).commit()
                 EventViewModel.State.CITY_WEATHER_FRAGMENT -> transaction
                     .replace(R.id.fragment_container, CityWeatherFragment()).commit()
                 EventViewModel.State.SEARCH_CITY -> transaction
                     .replace(R.id.fragment_container, CitySearchFragment()).commit()
-                else -> {}
+                EventViewModel.State.DETAILS_FRAGMENT -> transaction
+                    .replace(R.id.fragment_container, WeatherDetailsFragment())
+                    .commit()
+                else -> {
+                }
             }
         })
     }

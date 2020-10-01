@@ -67,8 +67,6 @@ class CityWeatherFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        citiesViewModel.addCity(City(1, "Tashkent"))
-
         citiesViewModel.cities.observe(viewLifecycleOwner, {
             viewPager.adapter = StateAdapter(requireActivity(), it)
         })

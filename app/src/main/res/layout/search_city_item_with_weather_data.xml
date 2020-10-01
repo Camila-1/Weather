@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/search_city_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="5dp"
+    android:padding="10dp"
+    android:background="@drawable/border_with_shadow">
+
+    <include
+        android:id="@+id/item_with_weather"
+        layout="@layout/search_city_item"/>
+
+    <ViewStub
+        android:id="@+id/weather_table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout="@layout/search_city_weather_table"
+        android:layout_below="@id/item_with_weather"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
+
+</RelativeLayout>

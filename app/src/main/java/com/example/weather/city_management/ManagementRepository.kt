@@ -17,6 +17,8 @@ interface ManagementRepository {
     val citiesDao: CitiesDao
 
     suspend fun autocompleteCitiesWeather(string: String): Either<CityManagementError, Nel<Pair<Variant, Optional<Weather>>>>
+
+    fun updateSessionToken()
 }
 
 sealed class CityManagementError

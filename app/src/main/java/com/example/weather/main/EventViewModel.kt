@@ -9,8 +9,9 @@ class EventViewModel : ViewModel() {
         CITY_MANAGEMENT_FRAGMENT,
         CITY_WEATHER_FRAGMENT,
         SETTINGS,
-        SEARCH_CITY
+        SEARCH_CITY,
+        DETAILS_FRAGMENT
     }
 
-    var state = MutableLiveData<State>(State.CITY_WEATHER_FRAGMENT)
+    var state = MutableLiveData(State.CITY_WEATHER_FRAGMENT)
 }

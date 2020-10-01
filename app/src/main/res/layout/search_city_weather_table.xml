@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TableLayout
+        android:id="@+id/table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:gravity="center_horizontal">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/day_of_week_0"
+                style="@style/TableStyle"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/day_of_week_1"
+                style="@style/TableStyle"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/day_of_week_2"
+                style="@style/TableStyle"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/day_of_week_3"
+                style="@style/TableStyle"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/day_of_week_4"
+                style="@style/TableStyle"/>
+        </TableRow>
+
+        <TableRow>
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_0"
+                style="@style/ImageViewStyle"/>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_1"
+                style="@style/ImageViewStyle"/>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_2"
+                style="@style/ImageViewStyle" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_3"
+                style="@style/ImageViewStyle" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_4"
+                style="@style/ImageViewStyle" />
+        </TableRow>
+
+        <TableRow
+            android:gravity="center_horizontal">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/max_0"
+                style="@style/TableStyle"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/max_1"
+                style="@style/TableStyle"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/max_2"
+                style="@style/TableStyle"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/max_3"
+                style="@style/TableStyle"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/max_4"
+                style="@style/TableStyle"/>
+        </TableRow>
+
+        <TableRow
+            android:gravity="center_horizontal">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/min_0"
+                style="@style/TableStyle"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/min_1"
+                style="@style/TableStyle"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/min_2"
+                style="@style/TableStyle"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/min_3"
+                style="@style/TableStyle"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/min_4"
+                style="@style/TableStyle"/>
+        </TableRow>
+
+    </TableLayout>
+
+</FrameLayout>

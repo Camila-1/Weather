@@ -8,11 +8,13 @@ import com.example.weather.network.weather_api.WeatherApiService
 import com.example.weather.settings.SharedPreferenceHolder
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
 class RepositoryModule {
 
     @Provides
+    @Singleton
     fun provideCitiesRepository(
         citiesDao: CitiesDao,
         googleApiService: GoogleApiService,

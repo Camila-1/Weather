@@ -48,9 +48,6 @@ class CityManagementFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //TODO remove this tine
-        citiesViewModel.addCity(City(1, "Tashkent"))
-
         ViewCompat.setOnApplyWindowInsetsListener(city_management) { _, insets ->
             val layoutParams = app_bar_city_management.layoutParams as ViewGroup.MarginLayoutParams
             layoutParams.setMargins(0, insets.systemWindowInsetTop, 0, 0)

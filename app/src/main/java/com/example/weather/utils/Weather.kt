@@ -9,6 +9,11 @@ import java.time.ZoneId
 data class DailyWeather(val min: Double, val max: Double, val icon: String)
 
 class Weather (private val weatherResponse: WeatherResponse) {
+
+    val cityName: String = weatherResponse.city.name
+
+    val cityId: Int = weatherResponse.city.id
+
     fun byDay(): List<Pair<LocalDate, List<WeatherData>>> {
         return weatherResponse.list.groupBy {
             Instant.ofEpochSecond(it.dateTime).atZone(ZoneId.systemDefault()).toLocalDate()

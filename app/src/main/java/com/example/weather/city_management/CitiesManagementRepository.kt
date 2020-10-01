@@ -25,9 +25,18 @@ class CitiesManagementRepository(
     private val spHolder: SharedPreferenceHolder
 ) : ManagementRepository {
 
+    init {
+        updateSessionToken()
+    }
+
     override val cities: LiveData<List<City>> = citiesDao.cities()
 
-    @ExperimentalCoroutinesApi
+    private lateinit var sessionToken: String
+
+    override fun updateSessionToken() {
+        sessionToken = UUID.randomUUID().toString()
+    }
+
     override suspend fun autocompleteCitiesWeather(string: String):
             Either<CityManagementError, Nel<Pair<Variant, Optional<Weather>>>> {
         val cities = autocomplete(string)
@@ -41,7 +50,7 @@ class CitiesManagementRepository(
                     "ru",
                     "(cities)",
                     string,
-                    UUID.randomUUID().toString()
+                    sessionToken
                 )
             }.mapLeft {
                 Log.e(this@CitiesManagementRepository::class.toString(), it.message, it)
@@ -76,11 +85,16 @@ class CitiesManagementRepository(
                 }
             },
             { maybeWeather -> maybeWeather.map { Weather(it) }.right() }
-        ).map { city to it }
+        ).map { setIsAddedValue(city) to it }
     }
 
     private suspend fun citiesWeather(cities: Nel<Variant>):
             Either<CityManagementError, Nel<Pair<Variant, Optional<Weather>>>> {
         return cities.map { cityWeather(it) }.sequence(Either.applicative()).fix()
+    }
+
+    private suspend fun setIsAddedValue(city: Variant): Variant {
+        city.isAdded = citiesDao.findById(city.placeId) != null
+        return city
     }
 }
