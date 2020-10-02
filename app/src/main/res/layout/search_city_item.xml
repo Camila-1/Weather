@@ -27,6 +27,7 @@
         android:insetRight="0dp"
         android:insetBottom="0dp"
         app:iconGravity="end"
+        android:textAllCaps="false"
         style="?android:attr/borderlessButtonStyle"/>
 
 </RelativeLayout>

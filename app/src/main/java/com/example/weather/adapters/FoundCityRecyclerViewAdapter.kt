@@ -170,8 +170,7 @@ class FoundCityRecyclerViewAdapter(
     private fun setButtonView(button: MaterialButton, isCityAdded: Boolean) {
         button.apply {
             if (isCityAdded) {
-                button.iconGravity = MaterialButton.ICON_GRAVITY_START
-                setIconResource(R.drawable.ic_baseline_check_24)
+                setIconResource(R.drawable.ic_baseline_chevron_right_24)
                 text = resources.getString(R.string.added)
             }
             else setIconResource(R.drawable.ic_baseline_add_24)

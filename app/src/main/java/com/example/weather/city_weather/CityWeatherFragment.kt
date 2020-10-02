@@ -11,8 +11,7 @@ import com.example.weather.LocationProvider
 import com.example.weather.R
 import com.example.weather.adapters.StateAdapter
 import com.example.weather.application.WeatherApplication
-import com.example.weather.main.EventViewModel
-import com.example.weather.db.City
+import com.example.weather.main.NavigationViewModel
 import com.example.weather.extensions.injectViewModel
 import com.example.weather.city_management.CitiesManagementViewModel
 import com.example.weather.permissions.PermissionProvider
@@ -33,13 +32,10 @@ class CityWeatherFragment : Fragment() {
 
     lateinit var citiesViewModel: CitiesManagementViewModel
 
-    lateinit var eventViewModel: EventViewModel
+    lateinit var eventViewModel: NavigationViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_city_weather, container, false)
     }
 
@@ -80,7 +76,7 @@ class CityWeatherFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
         R.id.settings -> { true }
         android.R.id.home -> {
-            eventViewModel.state.value = EventViewModel.State.CITY_MANAGEMENT_FRAGMENT
+            eventViewModel.state.value = NavigationViewModel.Screen.CITY_MANAGEMENT
             true
         }
         else -> { super.onOptionsItemSelected(item) }

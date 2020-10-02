@@ -34,8 +34,6 @@ class CitiesManagementViewModel @Inject constructor(private val repository: Mana
         }
     }
 
-    fun updateSessionToken() = repository.updateSessionToken()
-
     fun handleButtonClick(pair: Pair<Variant, Optional<Weather>>, position: Int) {
         when(pair.first.isAdded) {
             true -> { addCityButtonAction.value = AddCityButtonAction.OpenDetails }
@@ -44,6 +42,7 @@ class CitiesManagementViewModel @Inject constructor(private val repository: Mana
                     addCity(City(it.placeId, it.terms[0].value))
                     citiesWithWeather[position].first.isAdded = true
                     addCityButtonAction.value = AddCityButtonAction.AddCity(citiesWithWeather)
+                    repository.updateSessionToken()
                 }
             }
         }

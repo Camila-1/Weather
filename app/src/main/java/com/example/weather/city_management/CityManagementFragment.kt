@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -14,9 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather.R
 import com.example.weather.adapters.CitiesRecyclerViewAdapter
 import com.example.weather.application.WeatherApplication
-import com.example.weather.db.City
 import com.example.weather.extensions.injectViewModel
-import com.example.weather.main.EventViewModel
+import com.example.weather.main.NavigationViewModel
 import kotlinx.android.synthetic.main.fragment_city_management.*
 import javax.inject.Inject
 
@@ -27,7 +27,7 @@ class CityManagementFragment : Fragment() {
 
     lateinit var citiesViewModel: CitiesManagementViewModel
 
-    lateinit var eventViewModel: EventViewModel
+    lateinit var navigationViewModel: NavigationViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +40,14 @@ class CityManagementFragment : Fragment() {
         WeatherApplication.appComponent.inject(this)
 
         citiesViewModel = injectViewModel(viewModelFactory)
-        eventViewModel = injectViewModel(viewModelFactory)
+        navigationViewModel = injectViewModel(viewModelFactory)
+
+        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                isEnabled = false
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+        })
 
         super.onAttach(context)
     }
@@ -61,7 +68,7 @@ class CityManagementFragment : Fragment() {
         setHasOptionsMenu(true)
 
         city_management_frame.setOnClickListener {
-            eventViewModel.state.value = EventViewModel.State.SEARCH_CITY
+            navigationViewModel.state.value = NavigationViewModel.Screen.SEARCH_CITY
         }
 
         recycler_view.layoutManager = LinearLayoutManager(context)
@@ -71,7 +78,7 @@ class CityManagementFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
         R.id.settings -> { true }
         android.R.id.home -> {
-            eventViewModel.state.value = EventViewModel.State.CITY_WEATHER_FRAGMENT
+            navigationViewModel.state.value = NavigationViewModel.Screen.CITY_WEATHER
             true
         }
         else -> { super.onOptionsItemSelected(item) }

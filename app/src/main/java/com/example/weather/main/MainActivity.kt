@@ -3,7 +3,8 @@ package com.example.weather.main
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
-import android.view.*
+import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -22,13 +23,13 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    lateinit var eventViewModel: EventViewModel
+    lateinit var navigationViewModel: NavigationViewModel
 
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         WeatherApplication.appComponent.inject(this)
 
-        eventViewModel = injectViewModel(viewModelFactory)
+        navigationViewModel = injectViewModel(viewModelFactory)
 
         super.onCreate(savedInstanceState)
 
@@ -43,18 +44,22 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        eventViewModel.state.observe(this, Observer {
+        navigationViewModel.state.observe(this, Observer {
 
             val transaction = supportFragmentManager.beginTransaction()
             when (it) {
-                EventViewModel.State.CITY_MANAGEMENT_FRAGMENT -> transaction
-                    .replace(R.id.fragment_container, CityManagementFragment()).commit()
-                EventViewModel.State.CITY_WEATHER_FRAGMENT -> transaction
-                    .replace(R.id.fragment_container, CityWeatherFragment()).commit()
-                EventViewModel.State.SEARCH_CITY -> transaction
-                    .replace(R.id.fragment_container, CitySearchFragment()).commit()
-                EventViewModel.State.DETAILS_FRAGMENT -> transaction
+                NavigationViewModel.Screen.CITY_MANAGEMENT -> transaction
+                    .replace(R.id.fragment_container, CityManagementFragment())
+                    .addToBackStack(null).commit()
+                NavigationViewModel.Screen.CITY_WEATHER -> transaction
+                    .replace(R.id.fragment_container, CityWeatherFragment())
+                    .addToBackStack(null).commit()
+                NavigationViewModel.Screen.SEARCH_CITY -> transaction
+                    .replace(R.id.fragment_container, CitySearchFragment())
+                    .addToBackStack(null).commit()
+                NavigationViewModel.Screen.DETAILS -> transaction
                     .replace(R.id.fragment_container, WeatherDetailsFragment())
+                    .addToBackStack(null)
                     .commit()
                 else -> {
                 }
